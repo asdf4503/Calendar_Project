@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="FullCalendar">
+    <CLASSES />
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/web/FullCalendar" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>

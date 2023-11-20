@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="FullCalendar1">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/web/FullCalendar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
