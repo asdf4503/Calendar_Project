@@ -1,0 +1,16 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.io.*" %>
+<%
+  // 사용자 입력 값 가져오기
+  String username = request.getParameter("username");
+  String password = request.getParameter("password");
+
+  // 로그인 검증
+  if("db".equals(username) && "1234".equals(password)) {
+    // 로그인 성공: 캘린더 페이지로 리디렉션
+    response.sendRedirect("calendar.jsp");
+  } else {
+    // 로그인 실패: 경고 메시지와 함께 로그인 페이지로 돌아감
+    out.println("<script>alert('로그인 실패'); history.back();</script>");
+  }
+%>
