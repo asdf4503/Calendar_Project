@@ -38,9 +38,10 @@
             background-color: #fff;
             border-radius: 10px;
         }
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
+        input[type = "text"],
+        input[type = "email"],
+        input[type = "password"],
+        input[type = "Group"]{
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -82,6 +83,9 @@
 
                 <label for="confirm-password">비밀번호 확인</label>
                 <input type="password" id="confirm-password" name="confirm-password" required>
+
+                <label for="Group">팀</label>
+                <input type="Group" id="Group" name="Group" required>
 
                 <input type="submit" value="회원가입">
             </form>
