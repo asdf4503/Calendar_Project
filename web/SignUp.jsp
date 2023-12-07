@@ -100,18 +100,6 @@
     <div class="body-container">
         <div class="body-box">
             <form action="SignUpCheck.jsp" method="post">
-                <label for="username">이름</label>
-                <input type="text" id="username" name="username" required>
-
-                <label for="email">이메일</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" name="password" required>
-
-                <label for="confirm-password">비밀번호 확인</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
-
                 <!-- '팀' 콤보 박스 -->
                 <label for="team">팀</label>
                 <select id="team" name="team" onchange="onTeamChange()">
@@ -126,6 +114,18 @@
                     <label for="Group-password">팀 비밀번호</label>
                     <input type="Group-password" id="Group-password" name="Group-password">
                 </div>
+
+                <label for="username">이름</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="confirm-password">비밀번호 확인</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
 
                 <input type="submit" value="회원가입">
             </form>
