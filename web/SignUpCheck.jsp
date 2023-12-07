@@ -16,6 +16,8 @@
     String email = request.getParameter("email");
     String password = request.getParameter("password");
     String confirmPassword = request.getParameter("confirm-password");
+    String team = request.getParameter("team");
+    String teamPassword = request.getParameter("Group-password");
 
     boolean hasError = false;
     String errorMessage = "";
@@ -41,6 +43,21 @@
     if (!password.equals(confirmPassword)) {
         hasError = true;
         errorMessage += "비밀번호가 일치하지 않습니다.\\n";
+    }
+
+    if (team.equals("developer") && !"dd".equals(teamPassword)) {
+        hasError = true;
+        errorMessage += "개발자 팀의 비밀번호가 일치하지 않습니다.\\n";
+    }
+
+    if (team.equals("designer") && !"ss".equals(teamPassword)) {
+        hasError = true;
+        errorMessage += "디자이너 팀의 비밀번호가 일치하지 않습니다.\\n";
+    }
+
+    if (team.equals("manager") && !"mm".equals(teamPassword)) {
+        hasError = true;
+        errorMessage += "매니저 팀의 비밀번호가 일치하지 않습니다.\\n";
     }
 
     if (hasError) {
