@@ -4,38 +4,66 @@
 <head>
     <title>로그인</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        html, body {
+            height: 100%;
             margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 100%;
         }
-        h2 {
+
+        .header-container {
+            background-color: #f0f0f0;
             text-align: center;
-            color: #333;
+            height: 30%;
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+            flex-direction: column;
+            align-items: center;
         }
-        .form-group {
-            margin-bottom: 15px;
+        .header-text {
+            font-size: 30px;
+
+            font-weight: bold;
         }
-        label {
-            display: block;
-            color: #666;
+
+        .body-container {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            width: 100%;
+            height: 40%; /* 바디 컨테이너의 높이를 40%로 설정 */
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+
+        }
+        .body-box {
+            width: 250px;
+            height: 250px;
+            border: 1px solid #000;
+            background-color: #f0f0f0;
+            margin: 19px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 10px;
         }
         input[type="text"],
         input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
+            margin: 7px;
+            border: 2px solid #ddd;
             border-radius: 5px;
             box-sizing: border-box;
         }
@@ -51,32 +79,64 @@
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
-        .forgot-password {
+        #username {
+            font-size: 12px;
+        }
+        .form-group {
+            flex-direction: column;
+            display: flex;
+            height: 100%;
+            width: 100%;
             text-align: center;
-            display: block;
-            margin-top: 10px;
-            color: #007bff;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-container {
+            background-color: #f0f0f0;
+            height: 30%;
+            width: 100%;
+            text-align: center;
+            justify-content: flex-end;
+            flex-direction: column;
+            align-items: center;
+            display: flex;
+        }
+        .footer-text {
+            font-weight: bold;
+            font-size: 30px;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
 
-<h2>Login</h2>
 
 <!-- 로그인 폼 -->
 <form action="loginCheck.jsp" method="post">
-    <div class="form-group">
-        <label for="username">USER NAME</label>
-        <input type="text" id="username" name="username">
+    <div class="container">
+        <div class="header-container">
+            <div class="header-text">LOGIN</div>
+        </div>
+        <div class="body-container">
+            <div class="body-box">
+                <div class="form-group">
+                    <label for="username">USER NAME</label>
+                    <input type="text" id="username" name="username">
+
+                    <label for="password">PASSWORD</label>
+                    <input type="password" id="password" name="password">
+
+                    <input type="submit" value="LOGIN">
+
+                    <a href="SignUp.jsp" style="margin-top:10px; display:block; color:#007bff;">회원가입</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-container">
+
+        </div>
     </div>
-    <div class="form-group">
-        <label for="password">PASSWORD</label>
-        <input type="password" id="password" name="password">
-    </div>
-    <div class="form-group">
-        <input type="submit" value="LOGIN">
-    </div>
-    <a href="#" class="forgot-password">회원가입</a>
 </form>
 
 </body>

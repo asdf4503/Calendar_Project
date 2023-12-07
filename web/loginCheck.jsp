@@ -11,6 +11,6 @@
     response.sendRedirect("calendar.jsp");
   } else {
     // 로그인 실패: 경고 메시지와 함께 로그인 페이지로 돌아감
-    out.println("<script>alert('로그인 실패'); history.back();</script>");
+    out.println("<script>alert('로그인 실패했습니다.'); history.back();</script>");
   }
 %>
