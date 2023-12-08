@@ -1,9 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.io.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="Database.DatabaseConnector" %> <!-- DatabaseConnector 클래스 임포트 -->
 <%
   // 사용자 입력 값 가져오기
   String username = request.getParameter("username");
   String password = request.getParameter("password");
+
+  Connection con = null;
+  PreparedStatement pstmt = null;
 
   // 로그인 검증
   if("db".equals(username) && "1234".equals(password)) {

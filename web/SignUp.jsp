@@ -39,6 +39,7 @@
             border-radius: 10px;
         }
         input[type = "text"],
+        input[type = "userid"],
         input[type = "email"],
         input[type = "password"],
         input[type = "Group-password"]{
@@ -114,6 +115,9 @@
                     <label for="Group-password">팀 비밀번호</label>
                     <input type="Group-password" id="Group-password" name="Group-password">
                 </div>
+
+                <label for="userid">사원 번호</label>
+                <input type="text" id="userid" name="userid" required>
 
                 <label for="username">이름</label>
                 <input type="text" id="username" name="username" required>
