@@ -75,6 +75,7 @@
             background-color: #007bff;
             color: white;
             cursor: pointer;
+            margin: 7px;
         }
         input[type="submit"]:hover {
             background-color: #0056b3;
@@ -90,6 +91,20 @@
             text-align: center;
             justify-content: center;
             align-items: center;
+        }
+        button[type="button"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin: 7px;
+
+        }
+        button[type="button"]:hover {
+            background-color: #0056b3;
         }
 
         .footer-container {
@@ -129,7 +144,7 @@
 
                     <input type="submit" value="LOGIN">
 
-                    <a href="SignUp.jsp" style="margin-top:10px; display:block; color:#007bff;">회원가입</a>
+                    <button type="button" onclick="location.href='SignUp.jsp'">회원가입</button>
                 </div>
             </div>
         </div>
