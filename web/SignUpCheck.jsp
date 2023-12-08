@@ -47,23 +47,7 @@
         hasError = true;
         errorMessage += "비밀번호가 일치하지 않습니다.\\n";
     }
-    /*
-    //팀 비밀번호 확인
-    if (team.equals("developer") && !"dd".equals(teamPassword)) {
-        hasError = true;
-        errorMessage += "개발자 팀의 비밀번호가 일치하지 않습니다.\\n";
-    }
 
-    if (team.equals("designer") && !"ss".equals(teamPassword)) {
-        hasError = true;
-        errorMessage += "디자이너 팀의 비밀번호가 일치하지 않습니다.\\n";
-    }
-
-    if (team.equals("manager") && !"mm".equals(teamPassword)) {
-        hasError = true;
-        errorMessage += "매니저 팀의 비밀번호가 일치하지 않습니다.\\n";
-    }
-    */
     if (!hasError) {
         Connection con = null;
         PreparedStatement pstmtUser = null;
