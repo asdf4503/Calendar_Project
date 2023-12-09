@@ -11,31 +11,57 @@
   PreparedStatement pstmt = null;
   ResultSet rs = null;
   boolean loginSuccess = false;
+  String userTeamID = null;
+  String teamName = null;
 
-  // 개발자 아이디
+  // 디자인용 계정
   if("db".equals(username) && "1234".equals(password))
     // 로그인 성공: 캘린더 페이지로 리디렉션
     response.sendRedirect("calendar.jsp");
 
-
-    try {
+  try {
     // 데이터베이스 연결
     con = DatabaseConnector.getConnection();
 
-    // SQL 쿼리 준비
+    // 사용자 인증 쿼리
     String sql = "SELECT * FROM user WHERE user_name = ? AND user_PW = ?";
     pstmt = con.prepareStatement(sql);
-
-    // 쿼리 매개변수 설정
     pstmt.setString(1, username);
     pstmt.setString(2, password);
-
-    // 쿼리 실행
     rs = pstmt.executeQuery();
 
-    // 결과 확인
     if (rs.next()) {
-      loginSuccess = true; // 사용자가 존재하면 로그인 성공
+      loginSuccess = true; // 로그인 성공
+      String userID = rs.getString("user_id"); // 사용자 ID
+
+      // userteam에서 사용자의 team_ID 조회
+      sql = "SELECT team_ID FROM userteam WHERE user_ID = ?";
+      pstmt = con.prepareStatement(sql);
+      pstmt.setString(1, userID);
+      rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        userTeamID = rs.getString("team_ID"); // 사용자의 team_ID
+
+        // team 테이블에서 team_name 조회
+        sql = "SELECT team_name FROM team WHERE team_ID = ?";
+        pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, userTeamID);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+          teamName = rs.getString("team_name");
+        }
+      }
+    }
+
+    if (loginSuccess && teamName != null) {
+      session.setAttribute("username", username); // 사용자 이름을 세션에 저장
+      // 적절한 메시지와 함께 팀 캘린더 페이지로 리디렉션
+      out.println("<script>alert('" + teamName + "팀의 캘린더로 이동합니다.'); window.location = 'calendar.jsp?teamID=" + userTeamID + "';</script>");
+    } else {
+      // 로그인 실패 또는 팀 이름을 찾을 수 없음
+      out.println("<script>alert('로그인 실패하였거나 팀 정보를 찾을 수 없습니다.'); history.back();</script>");
     }
 
   } catch (SQLException e) {
@@ -46,14 +72,5 @@
     if (rs != null) try { rs.close(); } catch (SQLException ex) {}
     if (pstmt != null) try { pstmt.close(); } catch (SQLException ex) {}
     if (con != null) try { con.close(); } catch (SQLException ex) {}
-  }
-
-  // 로그인 검증
-  if (loginSuccess) {
-    // 로그인 성공: 캘린더 페이지로 리디렉션
-    response.sendRedirect("calendar.jsp");
-  } else {
-    // 로그인 실패: 경고 메시지와 함께 로그인 페이지로 돌아감
-    out.println("<script>alert('로그인 실패했습니다.'); history.back();</script>");
   }
 %>

@@ -1,49 +1,72 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="java.util.regex.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="Database.DatabaseConnector" %> <!-- DatabaseConnector 클래스 임포트 -->
+<%
+    // 사용자 이름을 세션에서 가져옵니다.
+    String username = (String) session.getAttribute("username");
+%>
 <!DOCTYPE html>
 <html lang='en'>
 <head>
     <title>DB ProJect~ 초심</title>
     <meta charset='utf-8' />
     <link href="${pageContext.request.contextPath}/FullCalendar/lib/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/calendarStyle.css"/>
     <script src="${pageContext.request.contextPath}/FullCalendar/lib/main.js"></script>
     <script src='FullCalendar/lib/locales/ko.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // FullCalendar 인스턴스 생성 및 설정
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: 880,
                 initialView: 'dayGridMonth',
                 locale: 'ko',
+                dayMaxEventRows: 2,
+
+
                 dateClick: function(info) {
-                    var clickedDate = info.dateStr;
+                    var clickedDate = new Date(info.dateStr); // 클릭한 날짜의 Date 객체 생성
+                    var formattedDate = clickedDate.getFullYear() + '년 ' +
+                        (clickedDate.getMonth() + 1) + '월 ' + // getMonth()는 0부터 11까지입니다.
+                        clickedDate.getDate() + '일';
+
+                    var modalContent = `
+                    <form action="calendarCheck.jsp" method="post">
+                        <div class="modal-top">
+                            <p style="font-weight: bold;">일정 추가 - ` + formattedDate + `</p>
+                        </div>
+                        <div class="modal-body">
+                            <div class="body-title">
+                                <input type="text" id="eventTitle" name="eventTitle" placeholder="일정 제목" required>
+                            </div>
+                            <div class="body-sub">
+                                <input type="text" id="eventDescription" name="eventDescription" placeholder="일정 내용" required>
+                            </div>
+                        </div>
+                        <input type="hidden" id="eventDate" name="eventDate" value="` + info.dateStr + `" required>
+                        <div class="modal-bottom">
+                            <button type="submit" id="addEventBtn">추가 하기</button>
+                        </div>
+                    </form>
+                    `;
+
                     var modal = document.createElement('div');
+                    modal.className = 'modal';
                     modal.innerHTML = `
-            <div id="myModal" class="modal">
-                <div class="modal-content">
-                  <div class="content-header"></div>
-                    <div class="content-body">
-                        <div class="first"></div>
-                    <div class="middle">
-                      <div class="modal-top">
-                        <span class="close">&times;</span>
-                        <p style="font-weight: bold;">일정 추가 ${clickedDate}</p>
-                      </div>
-                      <div class = "modal-body">
-                        <div class = "body-title">
-                          <input type="text" id="eventTitle" placeholder="일정 제목">
+                    <div class="modal-content">
+                        <div class="content-header"></div>
+                        <div class="content-body">
+                            <div class="first"></div>
+                            <div class="middle">
+                                ` + modalContent + `
+                            </div>
+                            <div class="end"></div>
                         </div>
-                        <div class = "body-sub">
-                          <input type="text" id="eventDescription" placeholder="일정 내용">
-                        </div>
-                      </div>
-                      <div class="modal-bottom">
-                        <button id="addEventBtn">추가 하기</button>
-                      </div>
                     </div>
-                    <div class="end"></div>
-                    </div>
-                </div>
-            </div>
-          `;
+                    </form>
+                    `;
                     document.body.appendChild(modal);
 
                     var modalClose = modal.querySelector('.close');
@@ -138,159 +161,7 @@
             });
             calendar.render();
         });
-
     </script>
-    <style>
-        html, body {
-            min-height: 100%;
-            margin: 0;
-            padding: 0;
-            position: relative;
-        }
-        /* 모달 스타일 */
-        .modal {
-            position: absolute;
-            z-index: 1;
-            display: grid;
-            place-items: center;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-        .modal-content {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-
-
-        }
-        .content-header {
-            width: 100%;
-            height: 10%;
-        }
-        .content-body {
-            width: 100%;
-            height: 70%;
-            display: flex;
-            flex-direction: row;
-        }
-        .first {
-            height: 40%;
-
-            width: 30%;
-        }
-        .end {
-            height: 40%;
-            width: 30%;
-        }
-        .middle {
-            position: relative;
-            flex-direction: column;
-            display: flex;
-            flex: 1;
-            height: 60%;
-            width: 40%;
-
-        }
-
-        .modal-top {
-            top: 0;
-            height: 10%;
-            width: 100%;
-            text-align: center;
-            background-color: #ffe4c4;
-        }
-        .modal-body {
-
-            align-items: center;
-            justify-content: center;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 80%;
-            background-color: #fffaf0;
-        }
-        .close {
-            cursor: pointer; /* 마우스 오버 시 커서 변경 */
-            position: absolute;
-
-            right: 10px;
-            font-size: 30px;
-            color: #fff;
-        }
-        .body-title {
-            text-align: center;
-            width: 100%;
-            align-items: center;
-            height: 20%;
-
-            justify-content: center;
-            border: 50px;
-        }
-        #eventTitle {
-            width: 80%;
-            height: 30%;
-
-        }
-
-        .body-sub {
-            width: 100%;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 30px;
-            height: 50%;
-        }
-        #eventDescription {
-            width: 80%;
-            height: 100%;
-
-        }
-
-        .modal-bottom {
-            width: 100%;
-
-            bottom: 0;
-            height: 20%;
-            text-align: center;
-            align-items: end;
-            background-color: #fffaf0;
-            display: flex;
-            justify-content: center;
-        }
-        #addEventBtn {
-            height: 40%;
-            margin: 10px;
-            border: 2px solid darksalmon;
-            background-color: rgba(0,0,0,0);
-            color: darksalmon;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        #updateEventBtn {
-            height: 40%;
-            margin: 10px;
-            border: 2px solid darksalmon;
-            background-color: rgba(0,0,0,0);
-            color: darksalmon;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        #deleteEventBtn {
-            height: 40%;
-            margin: 10px;
-            border: 2px solid darksalmon;
-            background-color: rgba(0,0,0,0);
-            color: darksalmon;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
 <div id='calendar'></div>

@@ -5,7 +5,7 @@ import java.sql.*;
 public class DatabaseConnector {
     static Connection con;
     public static Connection getConnection() {
-        String url = "jdbc:mysql://localhost:3306/sharecalendar?&serverTimezone=Asia/Seoul";
+        String url = "jdbc:mysql://localhost:3306/sharecalendar?&serverTimezone=Asia/Seoul&useSSL=false";
         String userid = "root";
         String pwd = "root";
 

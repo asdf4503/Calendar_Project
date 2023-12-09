@@ -19,8 +19,8 @@
     String email = request.getParameter("email");
     String password = request.getParameter("password");
     String confirmPassword = request.getParameter("confirm-password");
-    String team = request.getParameter("team");
-    String teamPassword = request.getParameter("Group-password");
+    String selectTeam = request.getParameter("team");
+    String GroupPassword = request.getParameter("Group-password");
 
     boolean hasError = false;
     String errorMessage = "";
@@ -52,7 +52,9 @@
         Connection con = null;
         PreparedStatement pstmtUser = null;
         PreparedStatement pstmtTeam = null;
+        PreparedStatement pstmt = null;
         boolean autoCommit = true;
+        ResultSet rs = null;
 
         try {
             // 데이터베이스 연결
@@ -60,6 +62,25 @@
             autoCommit = con.getAutoCommit();
             con.setAutoCommit(false); // 트랜잭션 시작
 
+            String sql = "SELECT team_PW FROM team WHERE team_name = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, selectTeam);
+            rs = pstmt.executeQuery();
+
+            String teamPassword = null;
+            if (rs.next()) {
+                teamPassword = rs.getString("team_PW"); // 데이터베이스에서 가져온 팀 비밀번호
+            }
+
+            sql = "SELECT team_name FROM team WHERE team_name = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, selectTeam);
+            rs = pstmt.executeQuery();
+
+            String teamName = null;
+            if(rs.next()) {
+                teamName = rs.getString("team_name");
+            }
             // SQL 쿼리 실행
             String sql_user = "INSERT INTO User (user_ID, user_name, user_email, user_PW) VALUES (?, ?, ?, ?)";
             pstmtUser = con.prepareStatement(sql_user);
@@ -69,37 +90,30 @@
             pstmtUser.setString(4, password); // 실제 애플리케이션에서는 비밀번호 해시 처리 필요
             int userResult = pstmtUser.executeUpdate();
 
+
             String sql_user_team = "INSERT INTO userteam (user_ID, team_ID) VALUES (?, ?)";
             pstmtTeam = con.prepareStatement(sql_user_team);
+
             //개발자 팀 회원가입
-            if(team.equals("developer"))    { pstmtTeam.setString(1, userid); pstmtTeam.setString(2, "1"); }
-            else {
-                errorMessage += "개발자 팀의 비밀번호가 일치하지 않습니다.\\n";
-                out.println("<script type='text/javascript'>showMessage('"+ errorMessage +"'); history.back();</script>");
-            }
-
+            if(GroupPassword.equals(teamPassword) && selectTeam.equals("개발자"))    { pstmtTeam.setString(1, userid); pstmtTeam.setString(2, "1"); }
             //디자이너 팀 회원가입
-            if(team.equals("designer"))     { pstmtTeam.setString(1, userid); pstmtTeam.setString(2, "2"); }
+            else if(GroupPassword.equals(teamPassword) && selectTeam.equals("디자이너"))     { pstmtTeam.setString(1, userid); pstmtTeam.setString(2, "2"); }
+            //연구원 팀 회원가입
+            else if(GroupPassword.equals(teamPassword) && selectTeam.equals("연구원"))     { pstmtTeam.setString(1, userid); pstmtTeam.setString(2, "3"); }
             else {
-                errorMessage += "디자이너 팀의 비밀번호가 일치하지 않습니다.\\n";
-                out.println("<script type='text/javascript'>showMessage('"+ errorMessage +"'); history.back();</script>");
-            }
-
-            if(team.equals("researcher"))     { pstmtTeam.setString(1, userid); pstmtTeam.setString(2, "3"); }
-            else {
-                errorMessage += "연구원 팀의 비밀번호가 일치하지 않습니다.\\n";
-                out.println("<script type='text/javascript'>showMessage('"+ errorMessage +"'); history.back();</script>");
+                con.rollback(); // 트랜잭션 롤백
+                out.println("<script type='text/javascript'>showMessage('"+ selectTeam + "팀의 비밀번호가 일치하지 않습니다." +"'); window.location.href = 'SignUp.jsp';</script>");
             }
 
             int teamresult = pstmtTeam.executeUpdate();
 
+            int i = 1;
             // 모든 쿼리가 성공적으로 실행되면 커밋
             if (teamresult > 0 && userResult > 0) {
                 con.commit(); // 트랜잭션 커밋
                 successMessage = "회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.";
-                out.println("<script type='text/javascript'>showMessage('" + successMessage + "'); window.location.href = 'index.jsp';</script>");
+                out.println("<script type='text/javascript'>showMessage('" + successMessage +"'); window.location.href = 'index.jsp';</script>");
             } else {
-                con.rollback(); // 트랜잭션 롤백
                 errorMessage = "회원가입에 실패했습니다. 다시 시도해주세요.";
                 out.println("<script type='text/javascript'>showMessage('" + errorMessage + "'); history.back();</script>");
             }
@@ -117,6 +131,8 @@
         } finally {
             if(pstmtUser != null) try { pstmtUser.close(); } catch(SQLException ex) {}
             if(pstmtTeam != null) try { pstmtTeam.close(); } catch(SQLException ex) {}
+            if (pstmt != null) try { pstmt.close(); } catch (SQLException ex) {}
+            if (rs != null) try { rs.close(); } catch (SQLException ex) {}
             if(con != null) {
                 try {
                     con.setAutoCommit(autoCommit); // 원래의 auto-commit 상태로 복구
