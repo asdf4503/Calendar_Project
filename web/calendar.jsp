@@ -1,11 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@ page import="java.util.regex.*" %>
-<%@ page import="java.sql.*" %>
-<%@ page import="Database.DatabaseConnector" %> <!-- DatabaseConnector 클래스 임포트 -->
-<%
-    // 사용자 이름을 세션에서 가져옵니다.
-    String username = (String) session.getAttribute("username");
-%>
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -25,6 +18,18 @@
                 locale: 'ko',
                 dayMaxEventRows: 2,
 
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    fetch('calendarData.jsp')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data); // 로그 출력
+                            successCallback(data);
+                        })
+                        .catch(error => {
+                            console.error(error); // 에러 로깅
+                            failureCallback(error);
+                        });
+                },
 
                 dateClick: function(info) {
                     var clickedDate = new Date(info.dateStr); // 클릭한 날짜의 Date 객체 생성
@@ -34,6 +39,7 @@
 
                     var modalContent = `
                     <form action="calendarCheck.jsp" method="post">
+                        <div class="modal-content">
                         <div class="modal-top">
                             <p style="font-weight: bold;">일정 추가 - ` + formattedDate + `</p>
                         </div>
@@ -48,6 +54,7 @@
                         <input type="hidden" id="eventDate" name="eventDate" value="` + info.dateStr + `" required>
                         <div class="modal-bottom">
                             <button type="submit" id="addEventBtn">추가 하기</button>
+                        </div>
                         </div>
                     </form>
                     `;
@@ -149,6 +156,7 @@
                         document.body.removeChild(modal);
                     };
                 },
+
                 eventDidMount: function(info) {
                     var description = info.event.extendedProps.description;
                     if (description) {
