@@ -109,7 +109,7 @@
                     var eventDescription = clickedEvent.extendedProps.description || ''; // 기존 설명
                     var modal = document.createElement('div');
                     modal.innerHTML = `
-                    <form action="calendarUpdate.jsp" method="post">
+                    <form id = "eventForm" action="calendarUpdate.jsp" method="post">
                         <div id="myModal" class="modal">
                           <div class="modal-content">
                             <div class="content-header"></div>
@@ -130,8 +130,9 @@
                                           </div>
                                         </div>
                                         <div class="modal-bottom">
-                                          <button id="updateEventBtn">일정 수정</button>
-                                          <button id="deleteEventBtn" style="background-color: red; color: white;">일정 삭제</button>
+                                            <input type="hidden" name="action" id="formAction" value="">
+                                            <button id="updateEventBtn" name="updateAction" value = "update">일정 수정</button>
+                                            <button id="deleteEventBtn" name="deleteAction" style="background-color: red; color: white;" value = "delete">일정 삭제</button>
                                         </div>
                                     </div>
                                     <div class="end"></div>
@@ -147,6 +148,8 @@
                         document.body.removeChild(modal);
                     };
 
+                    var form = document.getElementById('eventForm');
+                    var formAction = document.getElementById('formAction');
                     var updateEventBtn = modal.querySelector('#updateEventBtn');
                     var deleteEventBtn = modal.querySelector('#deleteEventBtn');
                     var titleInput = modal.querySelector('#eventTitle');
@@ -156,6 +159,7 @@
                     descriptionInput.value = eventDescription;
 
                     updateEventBtn.onclick = function() {
+                        form.submit();
                         var newEventTitle = titleInput.value;
                         var newEventDescription = descriptionInput.value;
                         clickedEvent.setProp('title', newEventTitle);
@@ -163,6 +167,7 @@
                         document.body.removeChild(modal);
                     };
                     deleteEventBtn.onclick = function() {
+                        form.submit();
                         clickedEvent.remove(); // 이벤트 삭제
                         document.body.removeChild(modal);
                     };
