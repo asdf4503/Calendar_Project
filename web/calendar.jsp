@@ -117,15 +117,16 @@
                                     <div class="first"></div>
                                     <div class="middle">
                                         <div class="modal-top">
-                                            <span class="close">&times;</span>
-                                            <p style="font-weight: bold;">일정 수정 ${eventTitle}</p>
+                                            <p style="font-weight: bold;">일정 수정</p>
                                         </div>
                                         <div class="modal-body">
+                                        <input type="hidden" name="originalTitle" value="` + eventTitle + `" >
+                                        <input type="hidden" name="originalDescription" value="` + eventDescription + `">
                                           <div class="body-title">
-                                             <input type="text" id="eventTitle" placeholder="일정 제목" value="${eventTitle}">
+                                             <input type="text" name="newTitle" id="eventTitle" placeholder="일정 제목" value="` + eventTitle + `" required>
                                           </div>
                                           <div class="body-sub">
-                                            <input type="text" id="eventDescription" placeholder="일정 설명" value="${eventDescription}">
+                                            <input type="text" name="newDescription" id="eventDescription" placeholder="일정 설명" value="` + eventDescription + `" required>
                                           </div>
                                         </div>
                                         <div class="modal-bottom">
