@@ -166,3 +166,8 @@ form {
     border-radius: 5px;
     font-weight: bold;
 }
+.fc-event {
+    background-color: darksalmon !important; /* 배경색을 변경하고 !important를 사용하여 우선순위를 높입니다. */
+    border-color: darksalmon;
+    color: white !important;             /* 텍스트 색상을 변경하고 !important를 사용하여 우선순위를 높입니다. */
+}
