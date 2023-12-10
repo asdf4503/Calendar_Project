@@ -9,7 +9,8 @@
   response.setContentType("application/json");
   response.setCharacterEncoding("UTF-8");
 
-  String calendarID = (String) session.getAttribute("calendar_ID");
+  String userTeamID = (String) session.getAttribute("userTeamID");
+
   Connection con = null;
   PreparedStatement pstmt = null;
   ResultSet rs = null;
@@ -17,7 +18,18 @@
 
   try {
     con = DatabaseConnector.getConnection();
-    String sql = "SELECT title, description, date FROM event WHERE calendar_ID = ?";
+    String sql = "SELECT calendar_ID FROM calendar WHERE team_ID = ?";
+    pstmt = con.prepareStatement(sql);
+    pstmt.setString(1, userTeamID);
+    rs = pstmt.executeQuery();
+
+    String calendarID = null;
+    if(rs.next()) {
+        calendarID = rs.getString("calendar_ID");
+        session.setAttribute("calendarID", calendarID); //캘린더 ID 세션에 저장
+    }
+
+    sql = "SELECT title, description, date FROM event WHERE calendar_ID = ?";
     pstmt = con.prepareStatement(sql);
     pstmt.setString(1, calendarID);
     rs = pstmt.executeQuery();

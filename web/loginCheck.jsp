@@ -57,6 +57,7 @@
 
     if (loginSuccess && teamName != null) {
       session.setAttribute("username", username); // 사용자 이름을 세션에 저장
+      session.setAttribute("userTeamID", userTeamID); //팀 ID 세션에 저장
       // 적절한 메시지와 함께 팀 캘린더 페이지로 리디렉션
       out.println("<script>alert('" + teamName + "팀의 캘린더로 이동합니다.'); window.location = 'calendar.jsp?teamID=" + userTeamID + "';</script>");
     } else {

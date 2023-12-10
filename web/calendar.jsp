@@ -12,6 +12,21 @@
         document.addEventListener('DOMContentLoaded', function() {
             // FullCalendar 인스턴스 생성 및 설정
             var calendarEl = document.getElementById('calendar');
+
+            // 데이터 로딩 함수
+            function loadCalendarData() {
+                return fetch('calendarData.jsp')
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Data loaded: ", data);
+                        return data; // 로드된 데이터 반환
+                    })
+                    .catch(error => {
+                        console.error("Error loading data: ", error);
+                        // 에러 처리
+                    });
+            }
+
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 height: 880,
                 initialView: 'dayGridMonth',
@@ -19,16 +34,9 @@
                 dayMaxEventRows: 2,
 
                 events: function(fetchInfo, successCallback, failureCallback) {
-                    fetch('calendarData.jsp')
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data); // 로그 출력
-                            successCallback(data);
-                        })
-                        .catch(error => {
-                            console.error(error); // 에러 로깅
-                            failureCallback(error);
-                        });
+                    loadCalendarData().then(data => {
+                        successCallback(data);
+                    });
                 },
 
                 dateClick: function(info) {
@@ -101,34 +109,36 @@
                     var eventDescription = clickedEvent.extendedProps.description || ''; // 기존 설명
                     var modal = document.createElement('div');
                     modal.innerHTML = `
-            <div id="myModal" class="modal">
-              <div class="modal-content">
-                <div class="content-header"></div>
-                    <div class="content-body">
-                        <div class="first"></div>
-                        <div class="middle">
-                            <div class="modal-top">
-                                <span class="close">&times;</span>
-                                <p style="font-weight: bold;">일정 수정 ${eventTitle}</p>
-                            </div>
-                            <div class="modal-body">
-                              <div class="body-title">
-                                 <input type="text" id="eventTitle" placeholder="일정 제목" value="${eventTitle}">
-                              </div>
-                              <div class="body-sub">
-                                <input type="text" id="eventDescription" placeholder="일정 설명" value="${eventDescription}">
-                              </div>
-                            </div>
-                            <div class="modal-bottom">
-                              <button id="updateEventBtn">일정 수정</button>
-                              <button id="deleteEventBtn" style="background-color: red; color: white;">일정 삭제</button>
-                            </div>
+                    <form action="calendarUpdate.jsp" method="post">
+                        <div id="myModal" class="modal">
+                          <div class="modal-content">
+                            <div class="content-header"></div>
+                                <div class="content-body">
+                                    <div class="first"></div>
+                                    <div class="middle">
+                                        <div class="modal-top">
+                                            <span class="close">&times;</span>
+                                            <p style="font-weight: bold;">일정 수정 ${eventTitle}</p>
+                                        </div>
+                                        <div class="modal-body">
+                                          <div class="body-title">
+                                             <input type="text" id="eventTitle" placeholder="일정 제목" value="${eventTitle}">
+                                          </div>
+                                          <div class="body-sub">
+                                            <input type="text" id="eventDescription" placeholder="일정 설명" value="${eventDescription}">
+                                          </div>
+                                        </div>
+                                        <div class="modal-bottom">
+                                          <button id="updateEventBtn">일정 수정</button>
+                                          <button id="deleteEventBtn" style="background-color: red; color: white;">일정 삭제</button>
+                                        </div>
+                                    </div>
+                                    <div class="end"></div>
+                                </div>
+                          </div>
                         </div>
-                        <div class="end"></div>
-                    </div>
-              </div>
-            </div>
-          `;
+                        </form>
+                      `;
                     document.body.appendChild(modal);
 
                     var modalClose = modal.querySelector('.close');
@@ -167,7 +177,7 @@
                     }
                 }
             });
-            calendar.render();
+            calendar.render(); // 캘린더 렌더링
         });
     </script>
 </head>

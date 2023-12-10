@@ -59,7 +59,6 @@
     int eventResult = pstmt_event.executeUpdate();
 
     con.commit(); // 트랜잭션 커밋
-    session.setAttribute("calendar_ID", calendarID); // 사용자 이름을 세션에 저장
     out.println("<script>alert('이벤트가 성공적으로 추가되었습니다.'); window.location.href = 'calendar.jsp';</script>");
   } catch(Exception e) {
     if(con != null) {
