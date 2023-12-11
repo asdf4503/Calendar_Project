@@ -59,12 +59,12 @@
     int eventResult = pstmt_event.executeUpdate();
 
     con.commit(); // 트랜잭션 커밋
-    out.println("<script>alert('이벤트가 성공적으로 추가되었습니다.'); window.location.href = 'calendar.jsp';</script>");
+    out.println("<script>alert('일정이 추가되었습니다.'); window.location.href = 'calendar.jsp';</script>");
   } catch(Exception e) {
     if(con != null) {
       try { con.rollback(); } catch(SQLException ex) {}
       e.printStackTrace(); // 오류 로그 출력
-      out.println("<script>alert('이벤트 추가 중 오류가 발생했습니다: " + e.getMessage() + "'); history.back();</script>");
+      out.println("<script>alert('일정 추가 중 오류가 발생했습니다: " + e.getMessage() + "'); history.back();</script>");
     }
     e.printStackTrace(); // 오류 로그 출력
     // 오류 발생 시 사용자에게 메시지를 보내는 코드

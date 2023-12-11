@@ -17,7 +17,7 @@
   // 디자인용 계정
   if("db".equals(username) && "1234".equals(password))
     // 로그인 성공: 캘린더 페이지로 리디렉션
-    response.sendRedirect("calendar.jsp");
+    out.println("<script>alert('디자인용 캘린더 UI로 이동합니다.'); window.location.href = 'calendar.jsp'; </script>");
 
   try {
     // 데이터베이스 연결

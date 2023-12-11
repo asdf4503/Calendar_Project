@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel ="stylesheet" href="css/SignUpStyle.css" />
+    <link rel ="stylesheet" href="./css/SignUpStyle.css" />
     <title>회원가입</title>
     <script type="text/javascript">
         // 콤보 박스에서 팀을 선택했을 때 호출되는 함수

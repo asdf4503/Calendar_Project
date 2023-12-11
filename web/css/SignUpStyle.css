@@ -12,7 +12,7 @@ html, body {
 .header-container {
     background-color: #f0f0f0;
     text-align: center;
-    height: 20%;
+    height: 15%;
     display: flex;
     width: 100%;
     justify-content: flex-end;
@@ -27,14 +27,14 @@ html, body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     width: 100%;
-    height: 60%; /* 바디 컨테이너의 높이를 40%로 설정 */
+    height: 80%; /* 바디 컨테이너의 높이를 40%로 설정 */
     text-align: center;
     justify-content: center;
     align-items: center;
     display: flex;
 }
 .body-box {
-    height: 90%;
+    height: 80%;
     width: 300px;
     border: 1px solid #000;
     background-color: #f0f0f0;
@@ -85,7 +85,7 @@ select {
 }
 .footer-container {
     background-color: #f0f0f0;
-    height: 20%;
+    height: 5%;
     width: 100%;
     text-align: center;
     justify-content: flex-end;

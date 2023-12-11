@@ -12,7 +12,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // FullCalendar 인스턴스 생성 및 설정
             var calendarEl = document.getElementById('calendar');
-
             // 데이터 로딩 함수
             function loadCalendarData() {
                 return fetch('calendarData.jsp')
@@ -32,6 +31,11 @@
                 initialView: 'dayGridMonth',
                 locale: 'ko',
                 dayMaxEventRows: 2,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: ''
+                },
 
                 events: function(fetchInfo, successCallback, failureCallback) {
                     loadCalendarData().then(data => {
@@ -184,6 +188,21 @@
                 }
             });
             calendar.render(); // 캘린더 렌더링
+
+            // FullCalendar 렌더링 후 커스텀 버튼을 찾아서 제거합니다.
+            var customButton = document.querySelector('.fc-customButton-button'); // 실제 버튼의 클래스 이름을 확인해야 합니다.
+            if (customButton) {
+                customButton.style.display = 'none'; // 버튼을 숨깁니다.
+            }
+
+            // 헤더에 새로운 텍스트 요소를 추가합니다.
+            var headerToolbar = calendarEl.querySelector('.fc-header-toolbar');
+            if (headerToolbar) {
+                var textEl = document.createElement('div');
+                textEl.className = 'custom-text';
+                textEl.textContent = '<%= session.getAttribute("username") %>' + '님 환영합니다.'; // JSP 코드로 사용자 이름을 가져옵니다.
+                headerToolbar.appendChild(textEl);
+            }
         });
     </script>
 </head>
