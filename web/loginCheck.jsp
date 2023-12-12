@@ -6,6 +6,7 @@
   // 사용자 입력 값 가져오기
   String username = request.getParameter("username");
   String password = request.getParameter("password");
+  String loginUser = null;
 
   Connection con = null;
   PreparedStatement pstmt = null;
@@ -15,9 +16,12 @@
   String teamName = null;
 
   // 디자인용 계정
-  if("db".equals(username) && "1234".equals(password))
+  if("db".equals(username) && "1234".equals(password)) {
+    loginUser = "1";
+    session.setAttribute("loginUser", loginUser); // 사용자 이름을 세션에 저장
     // 로그인 성공: 캘린더 페이지로 리디렉션
     out.println("<script>alert('디자인용 캘린더 UI로 이동합니다.'); window.location.href = 'calendar.jsp'; </script>");
+  }
 
   try {
     // 데이터베이스 연결
@@ -56,6 +60,8 @@
     }
 
     if (loginSuccess && teamName != null) {
+      loginUser = "2";
+      session.setAttribute("loginUser", loginUser); // 사용자 이름을 세션에 저장
       session.setAttribute("username", username); // 사용자 이름을 세션에 저장
       session.setAttribute("userTeamID", userTeamID); //팀 ID 세션에 저장
       // 적절한 메시지와 함께 팀 캘린더 페이지로 리디렉션

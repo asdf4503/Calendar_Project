@@ -53,7 +53,14 @@
                     <form action="calendarCheck.jsp" method="post">
                         <div class="modal-content">
                         <div class="modal-top">
+                          <div class="top-first">
+                          </div>
+                          <div class="top-middle">
                             <p style="font-weight: bold;">일정 추가 - ` + formattedDate + `</p>
+                          </div>
+                          <div class="top-end">
+                            <button id="closeButton" class="close-button">X</button>
+                          </div>
                         </div>
                         <div class="modal-body">
                             <div class="body-title">
@@ -88,6 +95,11 @@
                     `;
                     document.body.appendChild(modal);
 
+                    var closeButton = modal.querySelector('.close-button'); // '.close-button' 클래스로 닫기 버튼을 찾습니다.
+                    closeButton.addEventListener('click', function() {
+                        modal.remove(); // 클릭 시 모달을 DOM에서 제거합니다.
+                    });
+
                     var modalClose = modal.querySelector('.close');
                     modalClose.onclick = function() {
                         document.body.removeChild(modal);
@@ -109,8 +121,14 @@
                 },
                 eventClick: function(info) {
                     var clickedEvent = info.event;
+                    var eventStart = clickedEvent.start;
+                    var formattedDate = eventStart.getFullYear() + '년 ' +
+                        (eventStart.getMonth() + 1) + '월 ' +
+                        eventStart.getDate() + '일';
                     var eventTitle = clickedEvent.title;
+
                     var eventDescription = clickedEvent.extendedProps.description || ''; // 기존 설명
+
                     var modal = document.createElement('div');
                     modal.innerHTML = `
                     <form id = "eventForm" action="calendarUpdate.jsp" method="post">
@@ -121,7 +139,15 @@
                                     <div class="first"></div>
                                     <div class="middle">
                                         <div class="modal-top">
-                                            <p style="font-weight: bold;">일정 수정</p>
+                                        <div class="top-first">
+
+                                        </div>
+                                        <div class="top-middle">
+                                            <p style="font-weight: bold;">일정 수정 - ` + formattedDate + `</p>
+                                        </div>
+                                        <div class="top-end">
+                                            <button id="closeButton" class="close-button">X</button>
+                                        </div>
                                         </div>
                                         <div class="modal-body">
                                         <input type="hidden" name="originalTitle" value="` + eventTitle + `" >
@@ -146,6 +172,11 @@
                         </form>
                       `;
                     document.body.appendChild(modal);
+
+                    var closeButton = modal.querySelector('.close-button'); // '.close-button' 클래스로 닫기 버튼을 찾습니다.
+                    closeButton.addEventListener('click', function() {
+                        modal.remove(); // 클릭 시 모달을 DOM에서 제거합니다.
+                    });
 
                     var modalClose = modal.querySelector('.close');
                     modalClose.onclick = function() {
@@ -194,13 +225,22 @@
             if (customButton) {
                 customButton.style.display = 'none'; // 버튼을 숨깁니다.
             }
+            <%
+                String loginUser = (String) session.getAttribute("loginUser");
+                boolean isUsernameNull = "1".equals(loginUser);;
+            %>
 
             // 헤더에 새로운 텍스트 요소를 추가합니다.
+            var isUsernameNull = <%= isUsernameNull %>; // JSP에서 전달된 값
             var headerToolbar = calendarEl.querySelector('.fc-header-toolbar');
             if (headerToolbar) {
                 var textEl = document.createElement('div');
                 textEl.className = 'custom-text';
-                textEl.textContent = '<%= session.getAttribute("username") %>' + '님 환영합니다.'; // JSP 코드로 사용자 이름을 가져옵니다.
+                if (isUsernameNull) {
+                    textEl.textContent = 'UI 개발 계정입니다.';
+                } else {
+                    textEl.textContent = '<%= session.getAttribute("username") %>' + '님 환영합니다.';
+                }
                 headerToolbar.appendChild(textEl);
             }
         });

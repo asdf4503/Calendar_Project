@@ -61,11 +61,37 @@ form {
 
 .modal-top {
     top: 0;
-    height: 10%;
+    height: 14%;
     width: 100%;
-    text-align: center;
     background-color: #ffe4c4;
+    display: flex;
+    flex-direction: row;
 }
+.top-first {
+    width: 20%;
+    left: 0;
+}
+.top-middle {
+    width: 60%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+.top-end {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.close-button {
+    right: 0;
+    margin: 2px;
+    font-size: 20px;
+    background-color: transparent;
+    position: absolute;
+    border-color: transparent;
+}
+
 .modal-body {
 
     align-items: center;
@@ -170,4 +196,36 @@ form {
     background-color: darksalmon !important; /* 배경색을 변경하고 !important를 사용하여 우선순위를 높입니다. */
     border-color: darksalmon;
     color: white !important;             /* 텍스트 색상을 변경하고 !important를 사용하여 우선순위를 높입니다. */
+}
+.fc-header-toolbar {
+    display: flex;
+    position: relative;
+    height: 8%;
+    justify-content: space-between;
+}
+
+.fc-header-toolbar .fc-toolbar-chunk {
+    width: 25%;
+    display: flex;
+    justify-content: center; /* 섹션 내부 아이템들을 센터 정렬 */
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+/* 우선순위를 높이기 위해 !important 사용 */
+/* 'left' 섹션에 추가적인 공간을 제공하도록 조정 */
+.fc-header-toolbar .fc-toolbar-chunk:first-child {
+    justify-content: flex-start;
+}
+
+.fc-header-toolbar .fc-toolbar-chunk:nth-child(2) {
+    flex: 0 0 auto;
+}
+.custom-text {
+    margin: 3px;
+    width: 25%;
+    right: 0;
+    font-size: 20px;
+    position: absolute;
+    text-align: end;
 }
